@@ -37,7 +37,7 @@ Then move it somewhere on your `PATH` and make it executable (macOS/Linux):
 
 ```bash
 chmod +x wtctw-mac-arm64
-mv wtctw-mac-arm64 /usr/local/bin/wtctw
+sudo mv wtctw-mac-arm64 /usr/local/bin/wtctw
 ```
 
 > To update, download the latest binary and replace the existing one.
@@ -65,7 +65,7 @@ wtctw --config
 
 ## Interactive TUI
 
-Running `wtctw` with no arguments opens the interactive interface — your full task list grouped by due date, with a live timer indicator.
+Running `wtctw` with no arguments opens the interactive interface - your full task list grouped by due date, with a live timer indicator.
 
 ### Key Bindings
 
@@ -143,9 +143,11 @@ wtctw fav remove <task-id>   # remove a task from favourites
 Clone the repo and run in watch mode:
 
 ```bash
-git clone https://github.com/your-org/wtc-teamwork-cli
-cd wtc-teamwork-cli
-deno task dev
+git clone https://github.com/wethegit/wtc-tw
+cd wtc-tw
+deno run -A main.ts
 ```
+
+## Logs
 
 Debug log is written to `/tmp/wtctw.log` on every run and reset on each invocation.
