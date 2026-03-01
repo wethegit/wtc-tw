@@ -1,0 +1,13 @@
+export const CLEAR = "\x1b[2J\x1b[H";
+export const HIDE_CUR = "\x1b[?25l";
+export const SHOW_CUR = "\x1b[?25h";
+export const RESET = "\x1b[0m";
+export const BOLD = "\x1b[1m";
+export const DIM = "\x1b[2m";
+export const REV = "\x1b[7m";
+export const RED = "\x1b[31m";
+export const GREEN = "\x1b[32m";
+export const YELLOW = "\x1b[33m";
+export const CYAN = "\x1b[36m";
+export const GRAY = "\x1b[37m";
+export const DARK_GRAY = "\x1b[90m";

@@ -1,0 +1,142 @@
+# wtctw
+
+> Trying to make using Teamwork less crap, since 2026.
+
+A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, manage timers, post comments, and hand tasks back, all without touching the browser.
+
+---
+
+## Roadmap
+
+1. Adding in board controls - need to determine the best way to accomplish this, both in terms of actual usage and in terms of the teamwork API (spoiler: the current one is being deprecated) - https://apidocs.teamwork.com/docs/teamwork/endpoints-by-object/boards/get-projects-id-boards-columns-json
+2. Adding in better assignment controls? Does TW provide a way to assign RACI or anything on a project?
+
+## Getting Started
+
+### Prerequisites
+
+Install [Deno](https://deno.com) if you haven't already:
+
+```bash
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+### Install
+
+```bash
+deno install \
+  --allow-net --allow-env --allow-read --allow-write --allow-run \
+  --name wtctw \
+  --global \
+  https://raw.githubusercontent.com/wethegit/wtc-tw/main/main.ts
+```
+
+> To update to the latest version, re-run the above command with `-f` appended.
+
+### Configure
+
+On first run, `wtctw` will walk you through setup:
+
+```bash
+wtctw
+```
+
+You'll be prompted for:
+
+- **Teamwork site** — your subdomain, e.g. `yourcompany.teamwork.com`
+- **API token** — found in Teamwork under _Settings → API → Your tokens_
+
+Config is saved to `~/.wtctw/config.json`. To reconfigure at any time:
+
+```bash
+wtctw --config
+```
+
+---
+
+## Interactive TUI
+
+Running `wtctw` with no arguments opens the interactive interface — your full task list grouped by due date, with a live timer indicator.
+
+### Key Bindings
+
+| Key                     | Action                                               |
+| ----------------------- | ---------------------------------------------------- |
+| `↑` / `↓`               | Navigate tasks                                       |
+| `Page Up` / `Page Down` | Scroll by page                                       |
+| `s`                     | Start or stop a timer for the selected task          |
+| `o`                     | Open the selected task in the browser                |
+| `f`                     | Toggle favourite                                     |
+| `c`                     | Post a comment (opens `$EDITOR`)                     |
+| `x`                     | Post a comment and hand the task back to its creator |
+| `v`                     | Toggle sort order: by due date ↔ by priority         |
+| `/`                     | Search tasks (Enter to submit, ESC to clear)         |
+| `F`                     | Switch to Favourites view                            |
+| `T`                     | Switch to Timers view                                |
+| `d`                     | Delete selected timer (Timers view only)             |
+| `ESC`                   | Go back / clear search                               |
+| `q` / `Ctrl-C`          | Quit                                                 |
+
+---
+
+## CLI Commands
+
+All commands can be used non-interactively, useful for scripting or quick one-liners.
+
+### Timers
+
+```bash
+wtctw timer list                  # list all timers (running and paused)
+wtctw timer start <task-id>       # start a timer for a task
+wtctw timer stop                  # stop the currently running timer
+wtctw timer delete <timer-id>     # delete a timer
+wtctw timer open                  # open the running timer's task in the browser
+```
+
+### Tasks
+
+```bash
+wtctw task list                          # list your assigned tasks, grouped by due date
+wtctw task list --format json            # output as JSON
+wtctw task list --format csv             # output as CSV
+wtctw task view <task-id>                # show full task details
+wtctw task comment <task-id>             # post a comment (opens $EDITOR)
+wtctw task comment <task-id> -m "msg"   # post a comment inline
+echo "msg" | wtctw task comment <task-id>  # post a comment from stdin
+wtctw task handback <task-id>            # comment + reassign to creator (opens $EDITOR)
+wtctw task handback <task-id> -m "msg"  # handback with inline comment
+echo "msg" | wtctw task handback <task-id> # handback with comment from stdin
+wtctw task open <task-id>                # open task in the browser
+```
+
+Comments accept input in priority order: `-m` flag → piped stdin → `$EDITOR`. This means you can pipe from anything:
+
+```bash
+# From a file
+cat handback-notes.txt | wtctw task handback <task-id>
+
+# From another command
+git log --oneline -5 | wtctw task comment <task-id>
+```
+
+### Favourites
+
+```bash
+wtctw fav list               # list all favourited tasks
+wtctw fav add <task-id>      # add a task to favourites
+wtctw fav remove <task-id>   # remove a task from favourites
+```
+
+---
+
+## Development
+
+Clone the repo and run in watch mode:
+
+```bash
+git clone https://github.com/your-org/wtc-teamwork-cli
+cd wtc-teamwork-cli
+deno task dev
+```
+
+Debug log is written to `/tmp/wtctw.log` on every run and reset on each invocation.
