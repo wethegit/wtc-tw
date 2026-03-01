@@ -17,14 +17,6 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 
 ## Getting Started
 
-### Prerequisites
-
-Install [Deno](https://deno.com) if you haven't already:
-
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-```
-
 ### Install
 
 Download the latest binary for your platform from the [releases page](https://github.com/wethegit/wtc-tw/releases/latest):
