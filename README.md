@@ -49,7 +49,8 @@ wtctw
 You'll be prompted for:
 
 - **Teamwork site** — your subdomain, e.g. `yourcompany.teamwork.com`
-- **API token** — found in Teamwork under _Settings → API → Your tokens_
+- **API token** — found in Teamwork under _Profile > Edit my details > API &amp; Mobile > Show your Token_
+  ![API token window in Teamwork](image.png)
 
 Config is saved to `~/.wtctw/config.json`. To reconfigure at any time:
 
