@@ -1,6 +1,6 @@
 # wtctw
 
-> Trying to make using Teamwork less crap, since 2026.
+> Trying to make using Teamwork better for developers, since 2026.
 
 A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, manage timers, post comments, and hand tasks back, all without touching the browser.
 
