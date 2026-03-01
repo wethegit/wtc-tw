@@ -1,7 +1,13 @@
 {
   "version": "0.0.1",
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch main.ts",
+    "compile:linux-x64": "deno compile --allow-net --allow-env --allow-read --allow-write --allow-run --target x86_64-unknown-linux-gnu --output dist/wtctw-linux-x64 main.ts",
+    "compile:linux-arm64": "deno compile --allow-net --allow-env --allow-read --allow-write --allow-run --target aarch64-unknown-linux-gnu --output dist/wtctw-linux-arm64 main.ts",
+    "compile:mac-x64": "deno compile --allow-net --allow-env --allow-read --allow-write --allow-run --target x86_64-apple-darwin --output dist/wtctw-mac-x64 main.ts",
+    "compile:mac-arm64": "deno compile --allow-net --allow-env --allow-read --allow-write --allow-run --target aarch64-apple-darwin --output dist/wtctw-mac-arm64 main.ts",
+    "compile:windows": "deno compile --allow-net --allow-env --allow-read --allow-write --allow-run --target x86_64-pc-windows-msvc --output dist/wtctw-windows-x64.exe main.ts",
+    "compile": "deno task compile:linux-x64 && deno task compile:linux-arm64 && deno task compile:mac-x64 && deno task compile:mac-arm64 && deno task compile:windows"
   },
   "imports": {
     "@cliffy/command": "jsr:@cliffy/command@^1.0.0",

@@ -23,15 +23,24 @@ curl -fsSL https://deno.land/install.sh | sh
 
 ### Install
 
+Download the latest binary for your platform from the [releases page](https://github.com/wethegit/wtc-tw/releases/latest):
+
+| Platform              | Binary                  |
+| --------------------- | ----------------------- |
+| macOS (Apple Silicon) | `wtctw-mac-arm64`       |
+| macOS (Intel)         | `wtctw-mac-x64`         |
+| Linux x86_64          | `wtctw-linux-x64`       |
+| Linux ARM64           | `wtctw-linux-arm64`     |
+| Windows x86_64        | `wtctw-windows-x64.exe` |
+
+Then move it somewhere on your `PATH` and make it executable (macOS/Linux):
+
 ```bash
-deno install \
-  --allow-net --allow-env --allow-read --allow-write --allow-run \
-  --name wtctw \
-  --global \
-  https://raw.githubusercontent.com/wethegit/wtc-tw/main/main.ts
+chmod +x wtctw-mac-arm64
+mv wtctw-mac-arm64 /usr/local/bin/wtctw
 ```
 
-> To update to the latest version, re-run the above command with `-f` appended.
+> To update, download the latest binary and replace the existing one.
 
 ### Configure
 
