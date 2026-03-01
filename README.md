@@ -10,6 +10,10 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 
 1. Adding in board controls - need to determine the best way to accomplish this, both in terms of actual usage and in terms of the teamwork API (spoiler: the current one is being deprecated) - https://apidocs.teamwork.com/docs/teamwork/endpoints-by-object/boards/get-projects-id-boards-columns-json
 2. Adding in better assignment controls? Does TW provide a way to assign RACI or anything on a project?
+3. Add actual workflows - complete task, auto post comment, assign back to correct person, move board etc.
+4. Bug: Search results don't come back with a due date, making everything look like far future.
+5. V1 API has some field name ambiguity that needs to be better resolved, currently just coalescing.
+6. Bug: No handling if Deno's consoleSizr command throws.
 
 ## Getting Started
 
