@@ -48,7 +48,7 @@ wtctw
 
 You'll be prompted for:
 
-- **Teamwork site** — your subdomain, e.g. `yourcompany.teamwork.com`
+- **Teamwork site** — your subdomain, e.g. `wethecollective.teamwork.com`
 - **API token** — found in Teamwork under _Profile > Edit my details > API &amp; Mobile > Show your Token_
   ![API token window in Teamwork](gh_token.png)
 
