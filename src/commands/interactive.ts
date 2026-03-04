@@ -60,6 +60,7 @@ const KEY = {
   P: 0x70,
   X: 0x78,
   SLASH: 0x2f,
+  QUESTION_MARK: 0x3f,
   PAGE_UP_SEQ: [0x1b, 0x5b, 0x35, 0x7e],
   PAGE_DOWN_SEQ: [0x1b, 0x5b, 0x36, 0x7e],
 } as const;
@@ -103,6 +104,7 @@ export async function runInteractive(
   let searchQuery = "";
   let searchMode = false;
   let sortOrder: SortOrder = "due";
+  let showHelp = false;
 
   let tasksView = createTaskListView(allTasks, sortOrder);
   let favsView = createTaskListView([]);
@@ -222,6 +224,7 @@ export async function runInteractive(
             searchMode,
             type: "main",
             sortOrder,
+            showHelp,
           },
         ),
       );
@@ -239,11 +242,14 @@ export async function runInteractive(
             searchQuery,
             searchMode,
             type: "favorites",
+            showHelp,
           },
         ),
       );
     } else {
-      write(renderTimersScreen(allTimers, timerSel, user, timerStatusMsg));
+      write(
+        renderTimersScreen(allTimers, timerSel, user, timerStatusMsg, showHelp),
+      );
     }
   };
   render();
@@ -318,6 +324,13 @@ export async function runInteractive(
         const vp = getVP();
         if (view === "tasks") tasksView = tlvPageDown(tasksView, vp);
         else if (view === "favorites") favsView = tlvPageDown(favsView, vp);
+        render();
+        continue;
+      }
+
+      // ? - toggle help (all views, outside search mode)
+      if (b[0] === KEY.QUESTION_MARK && !searchMode) {
+        showHelp = !showHelp;
         render();
         continue;
       }

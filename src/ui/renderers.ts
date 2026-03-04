@@ -111,6 +111,7 @@ export function renderTaskListScreen(
     searchQuery?: string;
     searchMode?: boolean;
     sortOrder?: SortOrder;
+    showHelp?: boolean;
   } = { type: "main" },
 ): string {
   const { columns: cols, rows: _termRows } = getConsoleSize();
@@ -279,8 +280,12 @@ export function renderTaskListScreen(
   lines.push("");
   const helpText =
     opts.type === "favorites"
-      ? "↑↓ navigate   o open   c comment   x handback   f unfav   s timer   / search   ESC back   q quit"
-      : "↑↓ navigate   o open   c comment   x handback   v sort   f fav   F favourites   s timer   / search   T timers   q quit";
+      ? opts.showHelp
+        ? "↑↓ navigate   o open   c comment   x handback   f unfav   s timer   / search   ? close   ESC back   q quit"
+        : "↑↓   s timer   o open   f unfav   c comment   ? help   ESC back   q quit"
+      : opts.showHelp
+        ? "↑↓ navigate   o open   c comment   x handback   v sort   f fav   F favourites   s timer   / search   T timers   ? close   q quit"
+        : "↑↓   s timer   o open   f fav   c comment   / search   ? help   q quit";
   lines.push(
     ...renderFooterLines(panelWidth, helpText, {
       searchBar: showSearchBar ? searchQuery : undefined,
@@ -297,6 +302,7 @@ export function renderTimersScreen(
   sel: number,
   user: Me,
   statusMsg: string,
+  showHelp = false,
 ): string {
   const { columns: cols } = getConsoleSize();
   const panelWidth = Math.min(cols, 100);
@@ -332,14 +338,13 @@ export function renderTimersScreen(
   }
 
   lines.push("");
+  const timersHelpText = showHelp
+    ? "↑↓ navigate   s complete timer   d delete timer   o open in browser   f favourite   ? close   ESC back"
+    : "↑↓   s complete   d delete   o open   f fav   ? help   ESC back";
   lines.push(
-    ...renderFooterLines(
-      panelWidth,
-      "↑↓ navigate   s complete   d delete   o open   ESC back",
-      {
-        statusMsg: statusMsg || undefined,
-      },
-    ),
+    ...renderFooterLines(panelWidth, timersHelpText, {
+      statusMsg: statusMsg || undefined,
+    }),
   );
   lines.push("");
 
