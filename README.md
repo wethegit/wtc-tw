@@ -15,8 +15,7 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 5. V1 API has some field name ambiguity that needs to be better resolved, currently just coalescing.
 6. Bug: No handling if Deno's consoleSizr command throws.
 7. Add an option for commenting on a task when a timer is started.
-8. Move less-common options to a secondary help view.
-9. Create a jump menu.
+8. Create a jump menu.
 
 ## Getting Started
 
