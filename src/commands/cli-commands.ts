@@ -29,7 +29,7 @@ import {
   timerElapsedMin,
 } from "../ui/formatters.ts";
 
-// Shared bootstrap
+//  Shared bootstrap
 
 async function getApiAndConfig(): Promise<{ api: ApiClient; config: Config }> {
   const config = await loadConfig();
@@ -44,9 +44,10 @@ async function openEditorForInput(): Promise<string> {
   const tmpFile = `/tmp/wtctw_input_${Date.now()}.txt`;
   try {
     await Deno.writeTextFile(tmpFile, "");
-    const editor = Deno.env.get("EDITOR") ?? Deno.env.get("VISUAL") ?? "vi";
+    const editorEnv = Deno.env.get("EDITOR") ?? Deno.env.get("VISUAL") ?? "vi";
+    const [editor, ...editorArgs] = editorEnv.split(" ");
     await new Deno.Command(editor, {
-      args: [tmpFile],
+      args: [...editorArgs, tmpFile],
       stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
@@ -67,7 +68,7 @@ async function getCommentBody(message?: string): Promise<string> {
   return openEditorForInput();
 }
 
-// Output formatters for task list
+//  Output formatters for task list
 
 function tasksToJson(tasks: Task[]): string {
   return JSON.stringify(tasks, null, 2);
@@ -92,7 +93,7 @@ function tasksToCsv(tasks: Task[]): string {
   return [header, ...rows].join("\n");
 }
 
-// Timer commands
+//  Timer commands
 
 export function buildTimerCommand(): Command {
   const cmd = new Command().description("Manage timers").action(function () {
@@ -189,7 +190,7 @@ export function buildTimerCommand(): Command {
   return cmd;
 }
 
-// Task commands
+//  Task commands
 
 export function buildTaskCommand(): Command {
   const cmd = new Command()
@@ -328,7 +329,7 @@ export function buildTaskCommand(): Command {
   return cmd;
 }
 
-// Fav commands
+//  Fav commands
 
 export function buildFavCommand(): Command {
   const cmd = new Command()

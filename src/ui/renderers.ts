@@ -281,10 +281,10 @@ export function renderTaskListScreen(
   const helpText =
     opts.type === "favorites"
       ? opts.showHelp
-        ? "↑↓ navigate   o open   c comment   x handback   f unfav   s timer   / search   ? close   ESC back   q quit"
+        ? "↑↓ navigate   s timer   ^S canned   w editor+timer   o open   c comment   x handback   f unfav   / search   ? close   ESC back   q quit"
         : "↑↓   s timer   o open   f unfav   c comment   ? help   ESC back   q quit"
       : opts.showHelp
-        ? "↑↓ navigate   o open   c comment   x handback   v sort   f fav   F favourites   s timer   / search   T timers   ? close   q quit"
+        ? "↑↓ navigate   s timer   ^S canned   w editor+timer   o open   c comment   x handback   v sort   f fav   F favourites   / search   T timers   ? close   q quit"
         : "↑↓   s timer   o open   f fav   c comment   / search   ? help   q quit";
   lines.push(
     ...renderFooterLines(panelWidth, helpText, {

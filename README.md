@@ -15,7 +15,8 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 5. V1 API has some field name ambiguity that needs to be better resolved, currently just coalescing.
 6. Bug: No handling if Deno's consoleSizr command throws.
 7. Add an option for commenting on a task when a timer is started.
-8. Create a jump menu.
+8. Move less-common options to a secondary help view.
+9. Create a jump menu.
 
 ## Getting Started
 
@@ -60,6 +61,12 @@ Config is saved to `~/.wtctw/config.json`. To reconfigure at any time:
 wtctw --config
 ```
 
+You can also edit `~/.wtctw/config.json` directly to set optional fields:
+
+| Field                | Type     | Default                 | Description                                      |
+| -------------------- | -------- | ----------------------- | ------------------------------------------------ |
+| `cannedTimerComment` | `string` | `"Working on this now"` | Comment posted when starting a timer with Ctrl-S |
+
 ---
 
 ## Interactive TUI
@@ -68,22 +75,25 @@ Running `wtctw` with no arguments opens the interactive interface - your full ta
 
 ### Key Bindings
 
-| Key                     | Action                                               |
-| ----------------------- | ---------------------------------------------------- |
-| `↑` / `↓`               | Navigate tasks                                       |
-| `Page Up` / `Page Down` | Scroll by page                                       |
-| `s`                     | Start or stop a timer for the selected task          |
-| `o`                     | Open the selected task in the browser                |
-| `f`                     | Toggle favourite                                     |
-| `c`                     | Post a comment (opens `$EDITOR`)                     |
-| `x`                     | Post a comment and hand the task back to its creator |
-| `v`                     | Toggle sort order: by due date ↔ by priority         |
-| `/`                     | Search tasks (Enter to submit, ESC to clear)         |
-| `F`                     | Switch to Favourites view                            |
-| `T`                     | Switch to Timers view                                |
-| `d`                     | Delete selected timer (Timers view only)             |
-| `ESC`                   | Go back / clear search                               |
-| `q` / `Ctrl-C`          | Quit                                                 |
+| Key                     | Action                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| `↑` / `↓`               | Navigate tasks                                                                         |
+| `Page Up` / `Page Down` | Scroll by page                                                                         |
+| `s`                     | Start or stop a timer for the selected task                                            |
+| `Ctrl-S`                | Start timer and post a canned comment (configurable, default: _"Working on this now"_) |
+| `w`                     | Open `$EDITOR`, then start timer with that text as a comment                           |
+| `o`                     | Open the selected task in the browser                                                  |
+| `f`                     | Toggle favourite                                                                       |
+| `c`                     | Post a comment (opens `$EDITOR`)                                                       |
+| `x`                     | Post a comment and hand the task back to its creator                                   |
+| `v`                     | Toggle sort order: by due date ↔ by priority                                           |
+| `/`                     | Search tasks (Enter to submit, ESC to clear)                                           |
+| `F`                     | Switch to Favourites view                                                              |
+| `T`                     | Switch to Timers view                                                                  |
+| `d`                     | Delete selected timer (Timers view only)                                               |
+| `?`                     | Toggle full key reference                                                              |
+| `ESC`                   | Go back / clear search                                                                 |
+| `q` / `Ctrl-C`          | Quit                                                                                   |
 
 ---
 

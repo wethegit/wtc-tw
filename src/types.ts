@@ -1,6 +1,7 @@
 export interface Config {
   site: string; // e.g. "yourcompany.teamwork.com"
   token: string; // API token
+  cannedTimerComment?: string; // posted when starting a timer with Ctrl+S (default: "Working on this now")
 }
 
 export interface Me {
@@ -46,7 +47,16 @@ export type TimerObject = {
   task?: Task | null;
 };
 
-export type TaskGroup = "overdue" | "today" | "tomorrow" | "later" | "urgent" | "high" | "medium" | "normal" | "low";
+export type TaskGroup =
+  | "overdue"
+  | "today"
+  | "tomorrow"
+  | "later"
+  | "urgent"
+  | "high"
+  | "medium"
+  | "normal"
+  | "low";
 
 export type SortOrder = "due" | "priority";
 

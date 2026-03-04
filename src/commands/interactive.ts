@@ -59,6 +59,8 @@ const KEY = {
   D: 0x64,
   P: 0x70,
   X: 0x78,
+  CTRL_S: 0x13,
+  W: 0x77,
   SLASH: 0x2f,
   QUESTION_MARK: 0x3f,
   PAGE_UP_SEQ: [0x1b, 0x5b, 0x35, 0x7e],
@@ -193,9 +195,11 @@ export async function runInteractive(
     write(SHOW_CUR);
     try {
       await Deno.writeTextFile(tmpFile, "");
-      const editor = Deno.env.get("EDITOR") ?? Deno.env.get("VISUAL") ?? "vi";
+      const editorEnv =
+        Deno.env.get("EDITOR") ?? Deno.env.get("VISUAL") ?? "vi";
+      const [editor, ...editorArgs] = editorEnv.split(" ");
       await new Deno.Command(editor, {
-        args: [tmpFile],
+        args: [...editorArgs, tmpFile],
         stdin: "inherit",
         stdout: "inherit",
         stderr: "inherit",
@@ -335,7 +339,7 @@ export async function runInteractive(
         continue;
       }
 
-      // Search mode input──────────────────────────────────────────────────
+      // Search mode input
 
       if (searchMode) {
         const char = b[0];
@@ -366,7 +370,7 @@ export async function runInteractive(
         continue;
       }
 
-      // Task-list view keys (tasks OR favorites)───────────────────────────
+      // Task-list view keys (tasks OR favorites)
 
       if (view === "tasks" || view === "favorites") {
         const lv = activeLv();
@@ -377,15 +381,14 @@ export async function runInteractive(
           continue;
         }
 
-        // s - start timer (completing any existing timer for this task first)
-        if (b[0] === KEY.S && lv.tasks.length > 0) {
+        // Shared timer start/stop helper (optionally posts a comment when starting)
+        const doTimerToggle = async (commentBody?: string) => {
           const task = lv.tasks[lv.sel];
           await tryAction(async () => {
-            // Fetch timer list without task details — we only need ids/taskIds here
             const timers = await fetchAllTimers(api, false);
-            log("timers for s handler", timers.length);
+            log("timers for timer handler", timers.length);
 
-            // If the current timer is for the selected task, complete it.
+            // If the current timer is for the selected task, complete it (no comment on stop)
             if (currentTimer?.timer?.taskId === String(task.id)) {
               log("Stopping current timer for task", task.id);
               await completeTimer(api, currentTimer.timer.id);
@@ -393,10 +396,9 @@ export async function runInteractive(
               return;
             }
 
-            // Otherwise, see if there are any paused timers for this task and complete them (Teamwork only allows one running timer per task, but multiple paused timers can exist)
+            // Complete any paused timers for this task before starting a new one
             for (const timer of timers) {
               if (String(timer.taskId) === String(task.id)) {
-                // This try...catch is a belt-and-braces attempt to ensure we don't leave orphaned timers running if the completeTimer call fails for some reason
                 try {
                   log("Completing timer", timer.taskId, task.id);
                   await completeTimer(api, timer.id);
@@ -406,12 +408,31 @@ export async function runInteractive(
               }
             }
 
-            // Finally, start up the new timer
             const projectId = task["project-id"];
             if (!projectId) throw new Error("Task has no project ID");
             await startTimer(api, task.id, projectId);
+            if (commentBody) await postComment(api, task.id, commentBody);
             currentTimer = await fetchRunningTimer(api);
           });
+        };
+
+        // s - start/stop timer
+        if (b[0] === KEY.S && lv.tasks.length > 0) {
+          await doTimerToggle();
+          continue;
+        }
+
+        // Ctrl+S - start timer with canned comment
+        if (b[0] === KEY.CTRL_S && lv.tasks.length > 0) {
+          const canned = config.cannedTimerComment ?? "Working on this now";
+          await doTimerToggle(canned);
+          continue;
+        }
+
+        // w - open $EDITOR, then start timer with that content as comment
+        if (b[0] === KEY.W && lv.tasks.length > 0) {
+          const body = await openEditor();
+          await doTimerToggle(body || undefined);
           continue;
         }
 
@@ -467,7 +488,7 @@ export async function runInteractive(
           continue;
         }
 
-        // Tasks-only keys────────────────────────────────────────────────
+        // Tasks-only keys
 
         if (view === "tasks") {
           // F - open favourites screen
