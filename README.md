@@ -16,7 +16,8 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 6. Bug: No handling if Deno's consoleSizr command throws.
 7. Add an option for commenting on a task when a timer is started.
 8. Move less-common options to a secondary help view.
-9. Create a jump menu.
+9. Create a jump menu (maybe need an actual TUI library for this?)
+10. Add in the ability to comment on tasks as timers are started/stopped.
 
 ## Getting Started
 
