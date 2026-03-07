@@ -18,6 +18,7 @@ A terminal CLI for [Teamwork.com](https://teamwork.com) — view today's tasks, 
 8. Move less-common options to a secondary help view.
 9. Create a jump menu (maybe need an actual TUI library for this?)
 10. Add in the ability to comment on tasks as timers are started/stopped.
+11. Move config to ~/.config/
 
 ## Getting Started
 
